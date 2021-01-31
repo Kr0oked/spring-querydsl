@@ -1,15 +1,17 @@
 package de.bobek.spring.querydsl.customer;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.StreamSupport;
+
+import javax.annotation.PostConstruct;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static de.bobek.spring.querydsl.customer.QCustomer.customer;
 import static java.util.stream.Collectors.toList;
@@ -19,23 +21,24 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class CustomerService {
 
+    @NonNull
     private final CustomerRepository customerRepository;
 
     @PostConstruct
     @Transactional
     public void init() {
-        Customer customer = new Customer()
+        var customer = new Customer()
                 .setName("John Doe")
                 .setTimestamp(Instant.now());
 
-        Customer savedCustomer = customerRepository.save(customer);
+        customer = customerRepository.save(customer);
 
-        log.info("Saved {}", savedCustomer);
+        log.info("Saved {}", customer);
     }
 
     @Transactional(readOnly = true)
     public List<CustomerDto> searchCustomersByName(String value) {
-        BooleanExpression predicate = customer.name.contains(value);
+        var predicate = customer.name.contains(value);
         return StreamSupport.stream(customerRepository.findAll(predicate).spliterator(), false)
                 .map(this::mapToDto)
                 .collect(toList());
