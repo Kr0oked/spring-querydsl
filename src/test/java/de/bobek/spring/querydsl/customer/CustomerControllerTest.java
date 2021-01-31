@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class CustomerControllerTest {
+class CustomerControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void searchCustomersByName() {
+    void searchCustomersByName() {
         var response = restTemplate.getForObject("/customer/search/Doe", CustomerDto[].class);
 
         assertThat(response)
