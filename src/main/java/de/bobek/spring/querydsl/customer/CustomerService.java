@@ -39,7 +39,8 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public List<CustomerDto> searchCustomersByName(String value) {
         var predicate = customer.name.contains(value);
-        return StreamSupport.stream(customerRepository.findAll(predicate).spliterator(), false)
+        var result = customerRepository.findAll(predicate);
+        return StreamSupport.stream(result.spliterator(), false)
                 .map(this::mapToDto)
                 .collect(toList());
     }

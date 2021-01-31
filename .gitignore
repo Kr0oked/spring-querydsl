@@ -5,3 +5,6 @@ out/
 ### Gradle ###
 .gradle
 /build/
+
+### Querydsl ###
+src/main/generated/
